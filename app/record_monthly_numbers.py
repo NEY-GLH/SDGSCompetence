@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine
 from app.competence import *
+import sys
+import datetime
 
 def create_connection(db_file):
     """
@@ -58,7 +60,15 @@ def main():
 
     c = create_connection(database)
 
-    todays_date = datetime.date.today()
+    # I added a date parser to this so we can run the job for months where it has failed
+    # Provide your date in ISO format like 1995-01-12 for the 12th of January 1995
+
+    try:
+        string_date = sys.argv[1]
+        todays_date = datetime.datetime.strptime(string_date, "%Y-%m-%d").date()
+
+    except IndexError:
+        todays_date = datetime.date.today()
 
     counts = {
         'complete_assessments': {},
@@ -81,8 +91,8 @@ def main():
     assessments = get_assessments(c)
 
     for service_id, date_activated, date_completed, due_date, date_expiry, status in assessments:
-
-        if status == "Complete" or status == "Four Year Due":
+        # Some old assessments do not have a date of expiry and we need to ignore these.
+        if (status == "Complete" or status == "Four Year Due") and date_expiry is not None:
             if todays_date + relativedelta(months=-1) < date_completed: ### assessment has been completed in past month
                 counts['complete_assessments'][service_id] +=1
             if todays_date > date_expiry:
