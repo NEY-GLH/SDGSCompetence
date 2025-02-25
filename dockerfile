@@ -26,9 +26,4 @@ RUN python setup.py install
 
 WORKDIR /app
 
-COPY /app/competencedb.conf /etc/nginx/conf.d/competencedb.conf
-
 ENV MESSAGE "SDGSCompetence is running..."
-
-
-
