@@ -65,7 +65,7 @@ def main():
 
     print("I am checking for four year expiries!")
     for id, date_four_year_expiry, date_expiry, status, user_id in assessments:
-        if date_four_year_expiry is None:
+        if date_four_year_expiry is None or status == "Obsolete":
             continue
         elif date_four_year_expiry <= todays_date:
             sql = '''UPDATE assessments
