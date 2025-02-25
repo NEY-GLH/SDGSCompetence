@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file from v1.0.0.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v1.3.3] 2025-02-25
+
+### Fixed
+- Fixed issue viewing audit pages because of new Equivalence users
+- Fixed four year emails 
+
 
 ## [v1.3.2] 2023-03-01
 
