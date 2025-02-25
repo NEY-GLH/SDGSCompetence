@@ -39,7 +39,7 @@ def get_expiry_dates(conn):
     INNER JOIN competence ON subsection.c_id = competence.id 
     INNER JOIN competence_details ON competence.id = competence_details.c_id 
     WHERE users.active = '1' AND competence_details.intro = competence.current_version 
-    GROUP BY competence_details.id
+    GROUP BY users.id, competence_details.id
     '''
 
     results = conn.execute(sql)
