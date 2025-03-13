@@ -286,6 +286,8 @@ def get_competence_summary_by_user(c_id, u_id,version):
     """
     assigned_users = aliased(Users)
 
+    # wrt line 302 we do not want obsolete assessments in 
+    # this table as it causes the index page to error
     competence_result = s.query(Assessments). \
         outerjoin(Users, Users.id == Assessments.user_id). \
         outerjoin(assigned_users, assigned_users.id == Assessments.assign_id). \
@@ -297,6 +299,7 @@ def get_competence_summary_by_user(c_id, u_id,version):
         outerjoin(ValidityRef, CompetenceDetails.validity_period == ValidityRef.id). \
         filter(and_(Users.id == u_id, Competence.id == c_id)). \
         filter(Assessments.version == version).\
+        filter(Assessments.status != 6).\
         group_by(CompetenceDetails.id). \
         values((Users.first_name + ' ' + Users.last_name).label('user'),
                (assigned_users.first_name + ' ' + assigned_users.last_name).label('assigner'),
